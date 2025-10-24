@@ -4,8 +4,8 @@
             <div class="col-lg-8">
                 <div class="page-header-title">
                     <div class="d-inline">
-                        <h4>Sample Page</h4>
-                        <span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+                        <h4>Cadastrar Curso</h4>
+                        <span>Preencha as informações e clique em Salvar para cadastrar um novo curso.</span>
                     </div>
                 </div>
             </div>
@@ -17,8 +17,7 @@
                                 <i class="icofont icofont-home"></i>
                             </a>
                         </li>
-                        <li class="breadcrumb-item"><a href="#!">Pages</a>
-                        </li>
+                        <li class="breadcrumb-item"><a href="#!">Cadastrar curso</li>
                     </ul>
                 </div>
             </div>
@@ -31,15 +30,10 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Página Inicial</h5>
-                        <span>Seja bem-vindo ao Gurunator!</span>
+                        <h5>Formulário de Cadastro</h5>
                     </div>
                     <div class="card-block">
-                        <p>
-                            Na Gurunator, nós ensinamos diversos cursos interessantes e úteis para você, de forma
-                            acessível e completamente descomplicada!
-                            Aprenda na prática e com simplicidade.
-                        </p>
+                    
                     </div>
                 </div>
             </div>
