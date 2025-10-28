@@ -41,7 +41,7 @@ if (isset($_POST['enviar'])) {
             if (!$inserido) {
                 $erro[] = "Falha ao inserir no banco de dados: " . $mysqli->error;
             } else {
-                die("<script>location.href='index.php';</script>");
+                die("<script>location.href='index.php?p=gerenciar_cursos';</script>");
             }
         } else {
             $erro[] = "Falha ao enviar a imagem.";
