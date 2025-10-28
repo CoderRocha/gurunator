@@ -3,6 +3,8 @@
 include('lib/conexao.php');
 include('lib/enviarArquivo.php');
 
+$id = intval($_GET['id']);
+
 if (isset($_POST['enviar'])) {
     $titulo = $mysqli->real_escape_string($_POST['titulo']);
     $descricao_curta = $mysqli->real_escape_string($_POST['descricao_curta']);
@@ -26,28 +28,42 @@ if (isset($_POST['enviar'])) {
         $erro[] = "Preencha o Conteúdo.";
     }
 
-    if (!isset($_FILES) || !isset($_FILES['imagem']) || $_FILES['imagem']['size'] == 0) {
-        $erro[] = "Selecione uma imagem para o conteúdo.";
-    }
-
     if (count($erro) == 0) {
-        $deu_certo = enviarArquivo($_FILES['imagem']['error'], $_FILES['imagem']['size'], $_FILES['imagem']['name'], $_FILES['imagem']['tmp_name']);
+        $imagemAlterada = false;
+        if(isset($_FILES['imagem']) && isset($_FILES['imagem']['error']) && $_FILES['imagem']['size'] > 0) {
+        
+            $deu_certo = enviarArquivo($_FILES['imagem']['error'], $_FILES['imagem']['size'], $_FILES['imagem']['name'], $_FILES['imagem']['tmp_name']);
+            $imagemAlterada = true;
+        } else {
+            $deu_certo = true;
+        }
+        
         if ($deu_certo !== false) {
 
-            $sql_code = "INSERT INTO cursos (titulo, descricao_curta, conteudo, data_cadastro, preco, imagem) VALUES(
-            '$titulo', '$descricao_curta', '$conteudo', NOW(), '$preco', '$deu_certo')";
+            if($imagemAlterada) {
+
+            $sql_code = "UPDATE cursos SET titulo = $titulo, descricao_curta = $descricao_curta, conteudo = $conteudo, data_cadastro = NOW(), preco = $preco, imagem = '$deu_certo' WHERE id = $id";
+
+            } else {
+                $sql_code = "UPDATE cursos SET titulo = $titulo, descricao_curta = $descricao_curta, conteudo = $conteudo, data_cadastro = NOW(), preco = $preco WHERE id = $id";
+
+            }
+
             $inserido = $mysqli->query($sql_code);
 
             if (!$inserido) {
                 $erro[] = "Falha ao inserir no banco de dados: " . $mysqli->error;
             } else {
-                die("<script>location.href='index.php';</script>");
+                die("<script>location.href='index.php?p=gerenciar_cursos';</script>");
             }
         } else {
             $erro[] = "Falha ao enviar a imagem.";
         }
     }
 }
+
+$sql_query = $mysqli->query("SELECT * FROM cursos WHERE id='$id'") or die($mysqli->error);
+$curso = $sql_query->fetch_assoc();
 
 ?>
 
@@ -106,14 +122,14 @@ if (isset($_POST['enviar'])) {
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="">Título</label>
-                                    <input type="text" name="titulo" class="form-control">
+                                    <input type="text" value="<?php echo $curso['titulo']; ?>" name="titulo" class="form-control">
                                 </div>
                             </div>
 
                             <div class="col-lg-8">
                                 <div class="form-group">
                                     <label for="">Descrição</label>
-                                    <input type="text" name="descricao_curta" class="form-control">
+                                    <input type="text" value="<?php echo $curso['descricao_curta']; ?>" name="descricao_curta" class="form-control">
                                 </div>
                             </div>
 
@@ -127,14 +143,14 @@ if (isset($_POST['enviar'])) {
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="">Preço</label>
-                                    <input type="text" name="preco" class="form-control">
+                                    <input type="text" value="<?php echo $curso['preco']; ?>" name="preco" class="form-control">
                                 </div>
                             </div>
 
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label for="">Conteúdo</label>
-                                    <textarea type="text" name="conteudo" rows="10" class="form-control"></textarea>
+                                    <textarea type="text" name="conteudo" rows="10" class="form-control"><?php echo $curso['conteudo']; ?></textarea>
                                 </div>
                             </div>
 
