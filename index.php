@@ -1,10 +1,22 @@
 <?php 
 
+include('lib/conexao.php');
+include('lib/protect.php');
+protect(0);
+
+if(!isset($_SESSION)) {
+    session_start();
+}
+
 $pagina = "inicial.php";
 
 if(isset($_GET['p'])){
     $pagina = $_GET['p'] . ".php";
 }
+
+$id_usuario = $_SESSION['usuario'];
+$sql_query_admin = $mysqli->query("SELECT * FROM usuarios WHERE id='$id_usuario'") or die($mysqli->error);
+$dados_usuario = $sql_query_admin->fetch_assoc();
 
 ?>
 
@@ -94,15 +106,17 @@ if(isset($_GET['p'])){
                             </li>
                         </ul>
                         <ul class="nav-right">
+                            <?php if(!isset($_SESSION['admin']) || $_SESSION(['admin'])) { ?>
                             <li class="header-notification">
                                 <a href="#!">
                                     <i class="ti-money"></i>
-                                    <span class="badge bg-c-pink"></span> 50,00
+                                    <span class="badge bg-c-pink"></span> <?php echo number_format($dados_usuario['creditos'], 2, ',', '.'); ?>
                                 </a>
                             </li>
+                            <?php } ?>
                             <li class="user-profile header-notification">
                                 <a href="#!">
-                                    <span>John Doe</span>
+                                    <span><?php echo $dados_usuario['nome']; ?></span>
                                     <i class="ti-angle-down"></i>
                                 </a>
                                 <ul class="show-notification profile-notification">
@@ -112,23 +126,13 @@ if(isset($_GET['p'])){
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="ti-user"></i> Profile
+                                        <a href="index.php?p=perfil">
+                                            <i class="ti-user"></i> Perfil
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="ti-email"></i> My Messages
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="ti-lock"></i> Lock Screen
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="auth-normal-sign-in.html">
-                                            <i class="ti-layout-sidebar-left"></i> Logout
+                                        <a href="logout.php">
+                                            <i class="ti-layout-sidebar-left"></i> Sair
                                         </a>
                                     </li>
                                 </ul>
@@ -144,6 +148,7 @@ if(isset($_GET['p'])){
                     <nav class="pcoded-navbar">
                         <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
                         <div class="pcoded-inner-navbar main-menu">
+                        <?php if(!isset($_SESSION['admin']) || $_SESSION(['admin'])) { ?>
                             <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation">Menu</div>
                             <ul class="pcoded-item pcoded-left-item">
                                 <li class="">
@@ -180,6 +185,7 @@ if(isset($_GET['p'])){
                                 </li>
                                 
                             </ul>
+                            <?php } else { ?>
                         <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation">Menu Administrativo</div>
                         <ul class="pcoded-item pcoded-left-item">
                                 <li class="">
@@ -223,6 +229,7 @@ if(isset($_GET['p'])){
                                 </li>
                                 
                             </ul>
+                            <?php } ?>
                     </div>
                             
                     </nav>

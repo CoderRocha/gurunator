@@ -1,3 +1,32 @@
+<?php 
+
+$erro = false;
+if(isset($_POST['email']) || isset($_POST['senha'])) {
+
+    include('lib/conexao.php');
+    $email = $mysqli->real_escape_string($_POST['email']);
+    $senha = $mysqli->real_escape_string($_POST['senha']);
+
+    $sql_query = $mysqli->query("SELECT * FROM usuarios WHERE email='$email'") or die($mysqli->error);
+    $usuario = $sql_query->fetch_assoc();
+
+    if (password_verify($senha, $usuario['senha'])) {
+        if(!isset($_SESSION)) {
+            session_start();
+        $_SESSION['usuario'] = $usuario['id'];
+        $_SESSION['admin']   = $usuario['admin'];
+        header("location: index.php");
+        } else {
+            $erro = "Usuário ou Senha inválidos";
+        }
+    }
+
+
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,7 +86,7 @@
                 <div class="col-sm-12">
                     <!-- Authentication card start -->
                     <div class="login-card card-block auth-body mr-auto ml-auto">
-                        <form class="md-float-material">
+                        <form method="POST" class="md-float-material">
                             <div class="text-center">
                                 <img height="300" src="assets/images/auth/logo-dark.png" alt="logo.png">
                             </div>
@@ -68,6 +97,11 @@
                                     </div>
                                 </div>
                                 <hr/>
+                                <?php if ($erro != false) { ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?php echo $erro;;
+                                        } ?>
+                                    </div>
                                 <div class="input-group">
                                     <input type="email" class="form-control" placeholder="Email">
                                     <span class="md-line"></span>
@@ -92,7 +126,7 @@
                                 </div>
                                 <div class="row m-t-30">
                                     <div class="col-md-12">
-                                        <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Acessar</button>
+                                        <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Acessar</button>
                                     </div>
                                 </div>
                                 <!-- <hr/> -->
