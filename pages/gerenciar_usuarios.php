@@ -1,6 +1,8 @@
 <?php
 
 include('lib/conexao.php');
+include('lib/protect.php');
+protect(1);
 
 $sql_usuarios = "SELECT * FROM usuarios";
 $sql_query = $mysqli->query($sql_usuarios) or die($mysqli->error);

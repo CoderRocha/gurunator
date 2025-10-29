@@ -2,6 +2,8 @@
 
 include('lib/conexao.php');
 include('lib/enviarArquivo.php');
+include('lib/protect.php');
+protect(1);
 
 if (isset($_POST['enviar'])) {
     $nome = $mysqli->real_escape_string($_POST['nome']);

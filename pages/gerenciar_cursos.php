@@ -1,6 +1,8 @@
 <?php
 
 include('lib/conexao.php');
+include('lib/protect.php');
+protect(1);
 
 $sql_cursos = "SELECT * FROM cursos";
 $sql_query = $mysqli->query($sql_cursos) or die($mysqli->error);

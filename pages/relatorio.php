@@ -1,6 +1,8 @@
 <?php
 
 include('lib/conexao.php');
+include('lib/protect.php');
+protect(1);
 
 $sql_relatorios = "SELECT r.id, u.nome, c.titulo, r.data_compra, r.valor FROM relatorio r, usuarios u, cursos c WHERE u.id = r.id_usuario AND c.id = r.id_curso";
 $sql_query = $mysqli->query($sql_relatorios) or die($mysqli->error);
