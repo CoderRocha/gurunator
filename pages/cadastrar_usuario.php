@@ -9,6 +9,7 @@ if (isset($_POST['enviar'])) {
     $creditos = $mysqli->real_escape_string($_POST['creditos']);
     $senha = $mysqli->real_escape_string($_POST['senha']);
     $rsenha = $mysqli->real_escape_string($_POST['rsenha']);
+    $admin = $mysqli->real_escape_string($_POST['admin']);
 
     $erro = array();
     if (empty($nome)) {
@@ -33,7 +34,7 @@ if (isset($_POST['enviar'])) {
     if (count($erro) == 0) {
         
         $senha = password_hash($senha, PASSWORD_DEFAULT);
-        $mysqli->query("INSERT INTO usuarios (nome, email, senha, data_cadastro, creditos) VALUES('$nome', '$email', ('$senha'), NOW(), '$creditos')");
+        $mysqli->query("INSERT INTO usuarios (nome, email, senha, data_cadastro, creditos, admin) VALUES('$nome', '$email', ('$senha'), NOW(), '$creditos', '$admin')");
         die("<script>location.href='index.php?p=gerenciar_usuarios';</script>");
     }
 }
@@ -124,6 +125,16 @@ if (isset($_POST['enviar'])) {
                                 <div class="form-group">
                                     <label for="">Repetir senha</label>
                                     <input type="text" name="rsenha" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="">Tipo</label>
+                                    <select type="checkbox" name="admin" value="1" class="form-control">
+                                        <option value="0">Usuário</option>
+                                        <option value="1">Administrador</option>
+                                    </select>
                                 </div>
                             </div>
 

@@ -11,6 +11,7 @@ if (isset($_POST['enviar'])) {
     $creditos = $mysqli->real_escape_string($_POST['creditos']);
     $senha = $mysqli->real_escape_string($_POST['senha']);
     $rsenha = $mysqli->real_escape_string($_POST['rsenha']);
+    $admin = $mysqli->real_escape_string($_POST['admin']);
 
     $erro = array();
     if (empty($nome)) {
@@ -30,10 +31,10 @@ if (isset($_POST['enviar'])) {
     }
     if (count($erro) == 0) {
 
-        $sql_code = "UPDATE usuarios SET nome = $nome, email = $email, creditos = $creditos WHERE id = $id";
+        $sql_code = "UPDATE usuarios SET nome = $nome, email = $email, creditos = $creditos, admin = $admin WHERE id = $id";
 
         if(!empty($senha)) {
-            $sql_code = "UPDATE usuarios SET nome = $nome, email = $email, senha = '$senha', creditos = $creditos WHERE id = $id";
+            $sql_code = "UPDATE usuarios SET nome = $nome, email = $email, senha = '$senha', creditos = $creditos, admin = $admin WHERE id = $id";
 
         }
         
@@ -131,6 +132,16 @@ $usuario = $sql_query->fetch_assoc();
                                 <div class="form-group">
                                     <label for="">Repetir senha</label>
                                     <input type="text" name="rsenha" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="">Tipo</label>
+                                    <select type="checkbox" name="admin" value="1" class="form-control">
+                                        <option value="0">Usuário</option>
+                                        <option <?php if($usuario['admin'] == 1) { echo "selected"; } ?> value="1">Administrador</option>
+                                    </select>
                                 </div>
                             </div>
 
