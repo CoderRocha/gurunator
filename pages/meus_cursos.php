@@ -52,7 +52,11 @@ $cursos_query = $mysqli->query("SELECT * FROM cursos WHERE id IN $(SELECT id_cur
                         <p>
                             <?php echo $curso['descricao_curta']; ?>
                         </p>
-                            <button class="btn form-control btn-out-dashed btn-success btn-square">Acessar</button>
+                        <form action="index.php">
+                            <input type="hidden" name="p" value="acessar">
+                            <input type="hidden" name="id" value="<?php echo $curso['id']; ?>">
+                            <button type="submit" class="btn form-control btn-out-dashed btn-success btn-square">Acessar</button>
+                        </form>
                     </div>
                 </div>
             </div>
