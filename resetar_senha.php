@@ -1,3 +1,34 @@
+<?php 
+
+$msg = false;
+if(isset($_POST['email'])) {
+    include('lib/conexao.php');
+    include('lib/generateRandomString.php');
+    include('lib/enviarEmail.php');
+    $email = $mysqli->real_escape_string($_POST['email']);
+    $sql_query = $mysqli->query("SELECT COUNT(*) FROM usuarios WHERE email='$email'") or die($mysqli->error);
+    $result = $sql_query->fetch_assoc();
+
+    if ($result['id']) {
+
+        $nova_senha = generateRandomString(6);
+        $nova_senha_criptografada = password_hash($nova_senha, PASSWORD_DEFAULT);
+        $id_usuario = $result['id'];
+        $mysqli->query("UPDATE usuarios SET senha='$nova_senha_criptografada' WHERE id = '$id_usuario'") or die($mysqli->error);
+
+        enviarEmail($email, "Sua nova senha Gurunator", "
+        <h1>Olá " . $result['nome'] . " </h1>
+        <p>Uma nova senha foi definida para a sua conta.</p>
+        <p><b>Nova Senha:</b> $nova_senha</p>
+        ");
+        $msg = 'Se o seu e-mail existir no banco de dados, uma nova senha será enviada para ele.';
+    } else {
+        $msg = 'Se o seu e-mail existir no banco de dados, uma nova senha será enviada para ele.';
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,7 +88,7 @@
                 <div class="col-sm-12">
                     <!-- Authentication card start -->
                     <div class="login-card card-block auth-body mr-auto ml-auto">
-                        <form class="md-float-material">
+                        <form method="POST" class="md-float-material">
                             <div class="text-center">
                                 <img height="300" src="assets/images/auth/logo-dark.png" alt="logo.png">
                             </div>
@@ -68,6 +99,11 @@
                                     </div>
                                 </div>
                                 <hr/>
+                                <?php if ($msg != false) { ?>
+                                    <div class="alert alert-success" role="alert">
+                                        <?php echo $msg; ?>
+                                    </div>
+                                <?php } ?>
                                 <p style="color: black">Digite seu e-mail e a sua senha será enviada para ele.</p>
                                 <div class="input-group">
                                     <input type="email" class="form-control" placeholder="Email">
@@ -80,7 +116,7 @@
                                 </div>
                                 <div class="row m-t-30">
                                     <div class="col-md-12">
-                                        <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Enviar</button>
+                                        <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Enviar</button>
                                     </div>
                                 </div>
                                 <!-- <hr/> -->
