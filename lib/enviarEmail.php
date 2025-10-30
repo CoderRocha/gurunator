@@ -20,7 +20,7 @@ function enviarEmail($destinatario, $assunto, $mensagemHTML)
     $mail->CharSet = 'UTF-8'; // Define o charset do e-mail
 
     // Configuração do remetente e destinatário
-    $mail->setFrom('teste@zerobugs.com.br', 'Teste Zero Bugs');
+    $mail->setFrom('teste@exemplo.com.br', 'Teste');
     $mail->addAddress($destinatario); // Endereço de destino
     $mail->Subject = $assunto; // Assunto do e-mail
     $mail->Body = $mensagemHTML; // Corpo da mensagem em HTML
