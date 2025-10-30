@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $erro = false;
 if(isset($_POST['email']) || isset($_POST['senha'])) {
@@ -13,16 +13,13 @@ if(isset($_POST['email']) || isset($_POST['senha'])) {
     if (password_verify($senha, $usuario['senha'])) {
         if(!isset($_SESSION)) {
             session_start();
-        $_SESSION['usuario'] = $usuario['id'];
-        $_SESSION['admin']   = $usuario['admin'];
-        header("location: index.php");
+            $_SESSION['usuario'] = $usuario['id'];
+            $_SESSION['admin']   = $usuario['admin'];
+            header("location: index.php");
         } else {
             $erro = "Usuário ou Senha inválidos";
         }
     }
-
-
-
 }
 
 ?>
@@ -62,21 +59,41 @@ if(isset($_POST['email']) || isset($_POST['senha'])) {
 <body class="fix-menu">
     <!-- Pre-loader start -->
     <div class="theme-loader">
-    <div class="ball-scale">
-        <div class='contain'>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
-            <div class="ring"><div class="frame"></div></div>
+        <div class="ball-scale">
+            <div class='contain'>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
     <!-- Pre-loader end -->
 
     <section class="login p-fixed d-flex text-center bg-primary common-img-bg">
@@ -99,9 +116,9 @@ if(isset($_POST['email']) || isset($_POST['senha'])) {
                                 <hr/>
                                 <?php if ($erro != false) { ?>
                                     <div class="alert alert-danger" role="alert">
-                                        <?php echo $erro;;
-                                        } ?>
+                                        <?php echo $erro; ?>
                                     </div>
+                                <?php } ?>
                                 <div class="input-group">
                                     <input type="email" class="form-control" placeholder="Email">
                                     <span class="md-line"></span>
