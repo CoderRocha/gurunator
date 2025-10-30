@@ -250,11 +250,6 @@ $dados_usuario = $sql_query_admin->fetch_assoc();
             </div>
         </div>
     </div>
-<div class="fixed-button">
-	<a href="https://codedthemes.com/item/guru-able-admin-template/" target="_blank" class="btn btn-md btn-primary">
-	  <i class="fa fa-shopping-cart" aria-hidden="true"></i> Upgrade To Pro
-	</a>
-</div>
 
     <!-- Warning Section Starts -->
     <!-- Older IE warning message -->
