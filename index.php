@@ -14,9 +14,22 @@ if(isset($_GET['p'])){
     $pagina = $_GET['p'] . ".php";
 }
 
+// Verificar se o usuário está logado
+if(!isset($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $id_usuario = $_SESSION['usuario'];
 $sql_query_admin = $mysqli->query("SELECT * FROM usuarios WHERE id='$id_usuario'") or die($mysqli->error);
 $dados_usuario = $sql_query_admin->fetch_assoc();
+
+// Verificar se encontrou o usuário
+if(!$dados_usuario) {
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
 
 ?>
 
@@ -106,17 +119,17 @@ $dados_usuario = $sql_query_admin->fetch_assoc();
                             </li>
                         </ul>
                         <ul class="nav-right">
-                            <?php if(!isset($_SESSION['admin']) || $_SESSION(['admin'])) { ?>
+                            <?php if(!isset($dados_usuario['admin']) || $dados_usuario['admin'] == 0) { ?>
                             <li class="header-notification">
                                 <a href="#!">
                                     <i class="ti-money"></i>
-                                    <span class="badge bg-c-pink"></span> <?php echo number_format($dados_usuario['creditos'], 2, ',', '.'); ?>
+                                    <span class="badge bg-c-pink"></span> <?php echo number_format((float)$dados_usuario['creditos'], 2, ',', '.'); ?>
                                 </a>
                             </li>
                             <?php } ?>
                             <li class="user-profile header-notification">
                                 <a href="#!">
-                                    <span><?php echo $dados_usuario['nome']; ?></span>
+                                    <span><?php echo htmlspecialchars($dados_usuario['nome']); ?></span>
                                     <i class="ti-angle-down"></i>
                                 </a>
                                 <ul class="show-notification profile-notification">
@@ -148,7 +161,7 @@ $dados_usuario = $sql_query_admin->fetch_assoc();
                     <nav class="pcoded-navbar">
                         <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
                         <div class="pcoded-inner-navbar main-menu">
-                        <?php if(!isset($_SESSION['admin']) || $_SESSION(['admin'])) { ?>
+                        <?php if(!isset($dados_usuario['admin']) || $dados_usuario['admin'] == 0) { ?>
                             <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation">Menu</div>
                             <ul class="pcoded-item pcoded-left-item">
                                 <li class="">
