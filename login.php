@@ -1,7 +1,7 @@
 <?php
 
 $erro = false;
-if(isset($_POST['email']) || isset($_POST['senha'])) {
+if(isset($_POST['email']) && isset($_POST['senha'])) {
 
     include('lib/conexao.php');
     $email = $mysqli->real_escape_string($_POST['email']);
@@ -10,15 +10,22 @@ if(isset($_POST['email']) || isset($_POST['senha'])) {
     $sql_query = $mysqli->query("SELECT * FROM usuarios WHERE email='$email'") or die($mysqli->error);
     $usuario = $sql_query->fetch_assoc();
 
+    if ($usuario) {
     if (password_verify($senha, $usuario['senha'])) {
         if(!isset($_SESSION)) {
             session_start();
+            }
+            
             $_SESSION['usuario'] = $usuario['id'];
             $_SESSION['admin']   = $usuario['admin'];
+            
             header("location: index.php");
+            exit;
         } else {
             $erro = "Usuário ou Senha inválidos";
         }
+    } else {
+        $erro = "Usuário ou Senha inválidos";
     }
 }
 
@@ -120,11 +127,11 @@ if(isset($_POST['email']) || isset($_POST['senha'])) {
                                     </div>
                                 <?php } ?>
                                 <div class="input-group">
-                                    <input type="email" class="form-control" placeholder="Email">
+                                    <input type="email" name="email" class="form-control" placeholder="Email" required>
                                     <span class="md-line"></span>
                                 </div>
                                 <div class="input-group">
-                                    <input type="senha" class="form-control" placeholder="Senha">
+                                    <input type="password" name="senha" class="form-control" placeholder="Senha" required>
                                     <span class="md-line"></span>
                                 </div>
                                 <div class="row m-t-25 text-left">
