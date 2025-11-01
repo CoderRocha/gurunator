@@ -1,6 +1,6 @@
 <?php
 
-if(function_exists('protect')) {
+if(!function_exists('protect')) {
     function protect($admin) {
 
         if(!isset($_SESSION)) {
