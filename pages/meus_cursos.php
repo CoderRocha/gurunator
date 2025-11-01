@@ -8,7 +8,7 @@ if (!isset($_SESSION)) {
 }
 
 $id_usuario = $_SESSION['usuario'];
-$cursos_query = $mysqli->query("SELECT * FROM cursos WHERE id IN $(SELECT id_curso FROM relatorio WHERE id_usuario ='$id_usuario')") or die($mysqli->error);
+$cursos_query = $mysqli->query("SELECT * FROM cursos WHERE id IN (SELECT id_curso FROM relatorio WHERE id_usuario ='$id_usuario')") or die($mysqli->error);
 
 ?>
 <!-- Page-header start -->
